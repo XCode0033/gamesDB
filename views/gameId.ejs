@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game By ID</title>
+</head>
+<body>
+    <h1>Find A Game By Its ID: <%= game.id %></h1>
+
+    <h2><strong>Title: <%= game.title %></strong></h2>
+    <p>Genre: <%= game.genre %></p>
+    <p>rating: <%= game.rating %></p>
+    <p>description: <%= game.description %></p>
+    <a href="/<%= game.id %>/editPage">Edit</a>
+</body>
+</html>

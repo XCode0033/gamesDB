@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games Homepage</title>
+</head>
+<body>
+    <h1>All Games: </h1>
+    <form id="createForm" action="/" method="POST">
+        <input name="title" placeholder="Title">
+        <input name="genre" placeholder="Genre">
+        <input name="rating" placeholder="Rating">
+        <input name="description" placeholder="Description">
+        <button type="submit">Add Game</button>
+    </form>
+    <% games.forEach(game => { %>
+        <h3>ID: <%= game.id %></h3>
+        <h2><strong>Title: <%= game.title %></strong></h2>
+        <p>Genre: <%= game.genre %></p>
+        <p>Rating(0-5): <%= game.rating%></p>
+        <p>Description: <%= game.description%></p>
+        <a href="/<%= game.id %>/editPage">Edit</a>
+        <form class="deleteForms" data-id= "<%= game.id %>" action="/<%= game.id %>" method="DELETE">
+            <button id="deleteBtn" type="submit">Delete</button>
+        </form>
+        <p>---------</p>
+   <% }); %>
+
+
+   <script>
+    const createForm = document.getElementById("createForm");
+
+    createForm.addEventListener("submit", async(e) => {
+        e.preventDefault();
+
+        const formData = new FormData(createForm);
+        
+        const createdGame = {
+            title: formData.get("title"),
+            genre: formData.get("genre"),
+            rating: formData.get("rating"),
+            description: formData.get("description")
+        }
+        const response = await fetch("/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(createdGame)
+        })
+        if(response.ok) {
+            window.location.reload();
+        }
+    })
+
+    const deleteForms = document.querySelectorAll(".deleteForms")
+    deleteForms.forEach(deleteForm => {
+        deleteForm.addEventListener("submit", async(e) => {
+            e.preventDefault();
+
+            const form = e.currentTarget;
+            const id = deleteForm.dataset.id;
+
+            await fetch(`/${id}`, {
+                method:"DELETE"
+            })
+
+            window.location.reload();
+        })
+    });
+   </script>
+</body>
+</html>
