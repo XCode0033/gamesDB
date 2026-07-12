@@ -6,13 +6,13 @@
     <title>Edit Page</title>
 </head>
 <body>
-    <h1>Game Edit Page for Game: <span id="displayTitle"><%= game.title %></span>, <%= game.id %></h1>
-    <h3>ID: <%= game.id %></h3>
+    <h1>Game Edit Page for Game: <span id="displayTitle"><%= game.title %></span>, <%= game.game_id %></h1>
+    <h3>ID: <%= game.game_id %></h3>
     <h2><strong>Title: <span id="displayTitle2"><%= game.title %></span></strong></h2>
     <p>Genre: <span id="displayGenre"><%= game.genre %></span></p>
     <p>Rating(0-5): <span id="displayRating"><%= game.rating %></span></p>
     <p>Description: <span id="displayDescription"><%= game.description %></span></p>
-    <form id="editForm" action="/<%= game.id %>/editPage" method="POST">
+    <form id="editForm" action="/<%= game.game_id %>/editPage" method="POST">
 
         <div>
             <label for="title">Title</label>
@@ -52,7 +52,7 @@
                 description: formData.get("description")
             }
 
-            const response = await fetch("/<%= game.id %>", {
+            const response = await fetch("/<%= game.game_id %>", {
                 method: "PATCH",
                 headers: {
                     "Content-Type":"application/JSON"

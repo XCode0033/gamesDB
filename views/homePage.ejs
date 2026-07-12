@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1>All Games: </h1>
+    <a href="/gameLibrary">Game Library</a>
     <form id="createForm" action="/" method="POST">
         <input name="title" placeholder="Title">
         <input name="genre" placeholder="Genre">
@@ -15,13 +16,14 @@
         <button type="submit">Add Game</button>
     </form>
     <% games.forEach(game => { %>
-        <h3>ID: <%= game.id %></h3>
+        <h3>ID: <%= game.game_id %></h3>
         <h2><strong>Title: <%= game.title %></strong></h2>
         <p>Genre: <%= game.genre %></p>
         <p>Rating(0-5): <%= game.rating%></p>
         <p>Description: <%= game.description%></p>
-        <a href="/<%= game.id %>/editPage">Edit</a>
-        <form class="deleteForms" data-id= "<%= game.id %>" action="/<%= game.id %>" method="DELETE">
+        <a href="/<%= game.game_id%>/libraryEdit">Edit for library</a> 
+        <a href="/<%= game.game_id %>/editPage">Edit</a>
+        <form class="deleteForms" data-id= "<%= game.game_id %>" action="/<%= game.game_id %>" method="DELETE">
             <button id="deleteBtn" type="submit">Delete</button>
         </form>
         <p>---------</p>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Edit Page</title>
+</head>
+<body>
+    <p>Id: <%= game.game_id %></p>
+    <p>Title: <%= game.title %></p>
+    <p>Genre: <%= game.genre %></p>
+    <p>Rating: <%= game.rating %></p>
+    <p>Description: <%= game.description %></p>
+    <form id="libraryForm" action="/<%= game.game_id %>/gameLibrary" method="POST">
+        <input name="gamerTag" placeholder="User">
+        <input name="console_name" placeholder="Console">
+        <input name="owned" placeholder="True Or False">
+        <input name="hours_played" placeholder="hours_played">
+        <input name="status" placeholder="status">
+        <button type="submit">Submit</button>
+    </form>
+    <p id="libraryError" style="color:red;"></p>
+
+    <script>
+    const libraryForm = document.getElementById("libraryForm");
+
+    libraryForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(libraryForm);
+        const entry = Object.fromEntries(formData);
+
+        const response = await fetch("/<%= game.game_id %>/gameLibrary", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(entry)
+        });
+
+        if (response.ok) {
+            window.location.href = "/gameLibrary";
+        } else {
+            const error = await response.json();
+            document.getElementById("libraryError").textContent = error.message || "Something went wrong.";
+        }
+    });
+</script>
+</body>
+</html>

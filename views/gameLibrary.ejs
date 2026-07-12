@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Library</title>
+</head>
+<body>
+    <h1>Game Libary</h1>
+    <% if (games) { %>
+        <% games.forEach(game => { %>
+            <p>Id: <%= game.game_id%></p>
+            <p>Title: <%= game.title%></p>
+            <p>Genre: <%= game.genre%></p>
+            <p>Rating: <%= game.rating%></p>
+            <p>Description: <%= game.description%></p>
+       <% }); %>
+   <% }else {%>
+        <p>No games added.</p>
+   <% } %>
+    
+</body>
+</html>
