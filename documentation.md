@@ -39,8 +39,16 @@ console <-> users
 *DID NOT* run yet.
 
 
-*TASKS FOR 6/12/26 *
+# TASKS FOR 6/12/26 *
 1. Run new tables.
 2. Double check data and add new insert intos.
-3. Work on incorporating joins
-*NOTE* If im not using tags on games, does the join process as it relates to tags differ?
+
+These are better than tags right now for your stack and current level:
+•	User game library: a  user_games  junction with fields like  owned ,  hours_played ,  status ,  started_at ,  finished_at .
+•	Wishlist: either  status  inside  user_games  or a separate wishlist table if you want extra CRUD practice.
+•	Reviews:  reviews(user_id, game_id, rating, review_text)  so one user can review many games and games can have many reviews.
+•	Favorites: a simple boolean like  favorite BOOLEAN DEFAULT FALSE  on  user_games .
+•	Platform availability: keep  game_consoles  and query “show all games on Switch” or “show all consoles for Elden Ring.”
+
+
+working on user game library

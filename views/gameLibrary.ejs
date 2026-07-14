@@ -7,17 +7,24 @@
 </head>
 <body>
     <h1>Game Libary</h1>
-    <% if (games) { %>
-        <% games.forEach(game => { %>
-            <p>Id: <%= game.game_id%></p>
-            <p>Title: <%= game.title%></p>
-            <p>Genre: <%= game.genre%></p>
-            <p>Rating: <%= game.rating%></p>
-            <p>Description: <%= game.description%></p>
-       <% }); %>
-   <% }else {%>
-        <p>No games added.</p>
-   <% } %>
+    <a href="/">Return</a>
+    <% games.forEach(game => { %>
+        <p>ID: <%= game.game_id %></p>
+        <p>Title: <%= game.title %></p>
+        <p>Genre: <%=game.genre %></p>
+        <p>Rating: <%= game.rating %></p>
+        <p>Description: <%= game.description %></p>
+        <p>--- User Data ---</p>
+        <ul>
+            <p><strong>Gamertag: <%= game.gamertag %></strong></p>
+            <p>Console: <%= game.console_name %></p>
+            <p>Owned: <%= game.owned %></p>
+            <p>Status: <%= game.status %></p>
+            <p>Hours Played: <%= game.hours_played %></p>
+        </ul>
+
+        
+    <% }); %>
     
 </body>
 </html>

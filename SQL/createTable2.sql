@@ -1,3 +1,11 @@
+    CREATE TABLE games (
+        game_id SERIAL PRIMARY KEY,
+        title  VARCHAR(100) DEFAULT 'UNTITLED',
+        genre  VARCHAR(30) DEFAULT 'NONE',
+        rating  INT CHECK (rating <= 5),
+        description  TEXT
+    );
+
 CREATE TABLE IF NOT EXISTS users (
     user_id SERIAL PRIMARY KEY,
     gamerTag VARCHAR(100) DEFAULT 'UNNAMED',
@@ -11,12 +19,6 @@ CREATE TABLE IF NOT EXISTS consoles (
     generation VARCHAR(10)
 );
 
-CREATE TABLE IF NOT EXISTS usersAndConsoles (
-    user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
-    console_id INT REFERENCES consoles(console_id) ON DELETE CASCADE,
-    PRIMARY KEY (user_id, console_id)
-);
-
 CREATE TABLE IF NOT EXISTS game_library (
     user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
     game_id INT REFERENCES games(game_id) ON DELETE CASCADE,
@@ -27,6 +29,13 @@ CREATE TABLE IF NOT EXISTS game_library (
         CHECK (status IN ('backlog', 'playing', 'finished', 'dropped')),
     PRIMARY KEY (user_id, game_id, console_id)
 );
+
+CREATE TABLE IF NOT EXISTS usersAndConsoles (
+    user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
+    console_id INT REFERENCES consoles(console_id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, console_id)
+);
+
 
 CREATE TABLE IF NOT EXISTS gameAndConsoles (
     game_id INT REFERENCES games(game_id) ON DELETE CASCADE,
