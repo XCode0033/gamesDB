@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS consoles (
 );
 
 CREATE TABLE IF NOT EXISTS game_library (
+    library_id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
     game_id INT REFERENCES games(game_id) ON DELETE CASCADE,
     console_id INT REFERENCES consoles(console_id) ON DELETE CASCADE,
@@ -27,7 +28,8 @@ CREATE TABLE IF NOT EXISTS game_library (
     hours_played INT DEFAULT 0,
     status VARCHAR(15) NOT NULL DEFAULT 'backlog'
         CHECK (status IN ('backlog', 'playing', 'finished', 'dropped')),
-    PRIMARY KEY (user_id, game_id, console_id)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT game_library_unique_entry UNIQUE (user_id, game_id, console_id)
 );
 
 CREATE TABLE IF NOT EXISTS usersAndConsoles (

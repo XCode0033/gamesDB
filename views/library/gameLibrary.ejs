@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Library</title>
+
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        .success {
+            color: green;
+            font-size: larger;
+        }
+        
+        </style>
+</head>
+<body>
+    <h1>Game Libary</h1>
+    <a href="/">Return</a>
+    <p id="deleteSuccess" class="hidden">Entry Successfully Deleted!!</p>
+     <p id="librarySuccess" class="hidden">Successfully added to library!</p>
+    <% games.forEach(game => { %>
+        <p><strong>ID: <%= game.game_id %></strong></p>
+        <p><strong>Title: <%= game.title %></strong></p>
+        <p>Genre: <%=game.genre %></p>
+        <p>Rating: <%= game.rating %></p>
+        <p>Description: <%= game.description %></p>
+        <p>--- <strong>User Data</strong> ---</p>
+        <ul>
+            <p><strong>Gamertag: <%= game.gamertag %></strong></p>
+            <p>Console: <%= game.console_name %></p>
+            <p>Owned: <%= game.owned %></p>
+            <p>Status: <%= game.status %></p>
+            <p>Hours Played: <%= game.hours_played %></p>
+        </ul>
+        <!-- remember that everything is joined under "game" -->
+        <form class="deleteForms" data-id="<%= game.library_id %>" action="/gameLibrary/<%= game.library_id %>" method="DELETE">
+            <button type="submit">Delete</button>
+        </form>
+    <% }); %>
+        
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const librarySuccess = document.getElementById("librarySuccess");
+        const deleteSuccess = document.getElementById("deleteSuccess");
+        if(params.get("created") === "true") {
+            librarySuccess.classList.remove("hidden");
+            librarySuccess.classList.add("success");
+        }
+        if(params.get("deleted") === "true") {
+            deleteSuccess.classList.remove("hidden");
+            deleteSuccess.classList.add("success");
+        }
+        const deleteForms = document.querySelectorAll(".deleteForms")
+        deleteForms.forEach(deleteForm => {
+            deleteForm.addEventListener("submit", async(e) => {
+                e.preventDefault();
+                const form = e.currentTarget;
+                const id = deleteForm.dataset.id;
+
+                const response = await fetch(`/gameLibrary/${id}`, {
+                    method: "DELETE"
+                })
+                if (response.ok) {
+                window.location.href = "/gameLibrary?deleted=true";
+                
+            }else {
+                console.log('Error with entry deletion.')
+            }
+            })
+        })
+
+    </script>
+</body>
+</html>

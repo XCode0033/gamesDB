@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create A New User</title>
+
+    <style>
+        .hidden {
+            display: none;
+        }
+        .success {
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <form id="newUserForm" action="/userCreatePage" method="POST">
+        <input name="gamertag" placeholder="Gamertag">
+        <input name="age" placeholder="age">
+        <input name="email" placeholder="email">
+        <button type="submit">Create User</button>
+    </form>
+
+    <p id="successMessage" class="hidden">
+        User Created Successfuly!
+    </p>
+
+    <p id="errorMessage" class="hidden">
+        Something Went Wrong.
+    </p>
+    <script>
+
+        const newUserForm = document.getElementById("newUserForm");
+        const successMessage = document.getElementById("successMessage");
+        const errorMessage = document.getElementById("errorMessage");
+        newUserForm.addEventListener("submit", async(e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(newUserForm);
+            const data = Object.fromEntries(formData.entries())
+            const response = await fetch("/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+        
+            if (response.ok) {
+                successMessage.classList.remove("hidden");
+                successMessage.classList.add("success");
+                newUserForm.reset();
+            }else {
+                errorMessage.classList.remove("hidden");
+                errorMessage.classList.add("error");
+                console.log('something wen wrong.')
+            }
+        })
+
+
+    </script>
+</body>
+</html>

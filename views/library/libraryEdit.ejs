@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Edit Page</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <p>Id: <%= game.game_id %></p>
@@ -20,12 +29,14 @@
         <button type="submit">Submit</button>
     </form>
 
-    
-    <p id="libraryError" style="color:red;"></p>
+  
+    <p id="libraryError" class="hidden">Something went wrong.</p>
 
     <script>
     const libraryForm = document.getElementById("libraryForm");
-
+        const librarySuccess = document.getElementById("librarySuccess");
+        const libraryError = document.getElementById("libraryError");
+        const params = new URLSearchParams(window.location.search)
     libraryForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
@@ -39,10 +50,12 @@
         });
 
         if (response.ok) {
-            window.location.href = "/gameLibrary";
+            window.location.href = "/gameLibrary?created=true";
+            
         } else {
             const error = await response.json();
-            document.getElementById("libraryError").textContent = error.message || "Something went wrong.";
+            libraryError.classList.remove("hidden");
+            libraryError.classList.add("error");
         }
     });
 </script>

@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { createGame, deleteGame, getAllGames, getEditPage, getGameById, getGameLibrary, getLibraryEditPage, insertLibrary, patchGame } from "../controllers/gamesController";
-import { getAllUsers } from "../controllers/usersController";
+import { createGame, deleteGame, getAllGames, getEditPage, getGameById, patchGame } from "../controllers/gamesController";
+import { getGameLibrary, getLibraryEditPage, insertLibrary, deleteLibraryEntry } from "../controllers/libraryController";
+import { getAllUsers, createUser, getUserCreatePage } from "../controllers/usersController";
 import { asyncHandler } from "../utils/asyncHandler";
 import { validationHandler, gameValidators, idValidator } from "../middleware/validation";
 const router = Router();
@@ -14,6 +15,10 @@ router.get("/gameLibrary", asyncHandler(getGameLibrary))
 // ----------------------
 
 router.get("/users", getAllUsers)
+router.get("/userCreatePage", getUserCreatePage)
+router.post('/users', createUser)
+
+
 // specific games
 router.get("/:id", idValidator(),
 validationHandler,
@@ -27,7 +32,7 @@ router.get("/:id/editPage", asyncHandler(getEditPage))
 router.get("/:id/libraryEdit", asyncHandler(getLibraryEditPage))
 //
 router.post("/:id/gameLibrary", asyncHandler(insertLibrary))
-
+router.delete("/gameLibrary/:id", asyncHandler(deleteLibraryEntry))
 // ------------------
 // ---- users
 

@@ -11,19 +11,22 @@ export const getAllUsers:RequestHandler = async(req, res, next) => {
         ORDER BY user_id;
         `
     )
-    res.render("users", {users: result.rows})
+    res.render("users/users", {users: result.rows})
 }
 // Create a new user
 
+export const getUserCreatePage: RequestHandler = (req, res, next) => {
+    res.render('users/userCreatePage');
+}
 export const createUser:RequestHandler = async(req, res, next) => {
-    const {gamerTag, age, email} = req.body;
+    const {gamertag, age, email} = req.body;
 
     const result = await pool.query(`
         INSERT INTO users (gamerTag, age, email)
         VALUES ($1, $2, $3)
         RETURNING *
         
-        `, [gamerTag, age, email])
+        `, [gamertag, age, email])
     res.status(201).json(result.rows[0])
 
 }

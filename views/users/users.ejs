@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Users</title>
+    <a href="/userCreatePage">Create User</a>
 </head>
 <body>
+    <h1>All Users</h1>
+    
     <% users.forEach(user => { %>
         <p>ID: <%= user.user_id %></p>
         <h2>Gamertag: <%= user.gamertag %></h2>
         <p>Age: <%= user.age %></p>
-        
+        <p>Email: <%= user.email %></p>
         <p>----------</p>
    <% }); %>
 </body>

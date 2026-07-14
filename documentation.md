@@ -51,4 +51,19 @@ These are better than tags right now for your stack and current level:
 •	Platform availability: keep  game_consoles  and query “show all games on Switch” or “show all consoles for Elden Ring.”
 
 
-working on user game library
+# completed library connection
+
+#### new task
+## allow creation of new users to create new entries
+## get started page from home page
+## 1.create user block with console_name joined
+## 2. optional game add or homepage link
+
+
+### DEV checklist
+## 1. controller
+## 2. router
+## 3. ejs
+
+# Where im at
+## got users route up and running. Now just need to make it so new users can be added.

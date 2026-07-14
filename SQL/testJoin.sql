@@ -1,6 +1,6 @@
--- Read-only test query: full game_library join, for eyeballing current data.
--- Run manually with: psql -U xavier -d gamesdb -h localhost -f SQL/testJoin.sql
 
+
+-- to see what game nate already has 
 SELECT 
 u.gamerTag,
 u.user_id,
