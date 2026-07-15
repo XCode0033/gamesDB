@@ -48,6 +48,35 @@
     <p id="deleteSuccess" class="hidden">Entry Successfully Deleted!!</p>
      <p id="librarySuccess" class="hidden">Successfully added to library!</p>
      <p id="searchSuccess" class="hidden">Search Successfull!</p>
+
+     <% 
+    function buildUrl(overrides = {}) {
+        const params = new URLSearchParams();
+
+        const merged = {
+            game_id: filters?.game_id || '',
+            title: filters?.title || '',
+            genre: filters?.genre || '',
+            rating: filters?.rating || '',
+            user_id: filters?.user_id || '',
+            gamertag: filters?.gamertag || '',
+            console_name: filters?.console_name || '',
+            status: filters?.status || '',
+            hours_played: filters?.hours_played || '',
+            sortBy: filters?.sortBy || 'library_id',
+            sortDir: filters?.sortDir || 'desc',
+            page: currentPage || 1,
+            ...overrides
+
+        }
+        Object.entries(merged).forEach(([key, value]) => {
+            if(value !== "" && value !== null && value !== undefined) {
+                params.set(key, String(value));
+            }
+        });
+        return `/gameLibrary?${params.toString()}`
+    }
+     %>
      <h2>Search</h2>
      <form id="searchForm" action="/gameLibrary" method="GET">
         <div id="search-section">
@@ -108,8 +137,73 @@
             <a id="clear" href="/gameLibrary">Clear</a>
 
         </div>
+        <input type="hidden" name="sortBy" value="<%= filters?.sortBy || 'library_id' %>">
+        <input type="hidden" name="sortDir" value="<%= filters?.sortDir || 'desc' %>">
+        <input type="hidden" name="page" value="1">
      </form>
 
+     <hr>
+
+<h3>Sort</h3>
+
+<div class="sort-links">
+    <a href="<%= buildUrl({ sortBy: 'library_id', sortDir: 'desc', page: 1 }) %>">Newest</a>
+    <a href="<%= buildUrl({ sortBy: 'title', sortDir: 'asc', page: 1 }) %>">Title A-Z</a>
+    <a href="<%= buildUrl({ sortBy: 'title', sortDir: 'desc', page: 1 }) %>">Title Z-A</a>
+    <a href="<%= buildUrl({ sortBy: 'gamertag', sortDir: 'asc', page: 1 }) %>">Gamertag A-Z</a>
+    <a href="<%= buildUrl({ sortBy: 'hours_played', sortDir: 'desc', page: 1 }) %>">Most Hours</a>
+</div>
+
+<hr>
+
+<p><%= games.length %> result(s)</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Library ID</th>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Rating</th>
+            <th>Gamertag</th>
+            <th>Console</th>
+            <th>Status</th>
+            <th>Hours Played</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (games.length === 0) { %>
+            <tr>
+                <td colspan="8">No results found.</td>
+            </tr>
+        <% } %>
+
+        <% games.forEach(game => { %>
+            <tr>
+                <td><%= game.library_id %></td>
+                <td><%= game.title %></td>
+                <td><%= game.genre %></td>
+                <td><%= game.rating %></td>
+                <td><%= game.gamertag %></td>
+                <td><%= game.console_name %></td>
+                <td><%= game.status %></td>
+                <td><%= game.hours_played %></td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+
+<hr>
+
+<div class="pagination">
+    <% if (currentPage > 1) { %>
+        <a href="<%= buildUrl({ page: currentPage - 1 }) %>">Prev</a>
+    <% } %>
+
+    <span>Page <%= currentPage %></span>
+
+    <a href="<%= buildUrl({ page: currentPage + 1 }) %>">Next</a>
+</div>
 
 
     <% games.forEach(game => { %>
@@ -131,7 +225,8 @@
             <button id="deleteBtn" type="submit">Delete</button>
         </form>
     <% }); %>
-        
+
+
     <script>
         const params = new URLSearchParams(window.location.search);
         const librarySuccess = document.getElementById("librarySuccess");

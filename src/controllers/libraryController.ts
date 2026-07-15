@@ -17,6 +17,10 @@ export const getGameLibrary: RequestHandler = async (req, res, next) => {
     const status = req.query.status as string
     const hours_played = req.query.hours_played as string
   
+    // pagination
+    const page = Number(req.query.page) || 1;
+    const limit = 10;
+    const offset = (page - 1) * limit;
     
     let sql =
         `
@@ -100,6 +104,31 @@ export const getGameLibrary: RequestHandler = async (req, res, next) => {
         count++;
     }
 
+    //sorting
+    const sortBy = req.query.sortBy as string || "library_id";
+    const sortDir = req.query.sortDir as string || "desc";
+
+    const allowedSortFields: Record<string, string> = {
+        library_id: "gl.library_id",
+        title: "g.title",
+        gamertag: "u.gamertag",
+        genre: "g.genre",
+        status: 'gl.status',
+        hours_played: "gl.hours_played"
+    }
+
+    const allowedSortDirs = ["asc", "desc"];
+
+    const sortColumn = allowedSortFields[sortBy] || "gl.library_id";
+    const sortDirection = allowedSortDirs.includes(sortDir.toLocaleLowerCase())
+        ? sortDir.toUpperCase()
+        :"DESC";
+
+
+    sql += ` ORDER BY ${sortColumn} ${sortDirection}`;
+
+    sql += ` LIMIT $${count} OFFSET $${count + 1}`;
+    values.push(limit, offset)
     const result = await pool.query(sql, values);
     res.render('library/gameLibrary', { 
         games: result.rows,
@@ -112,8 +141,11 @@ export const getGameLibrary: RequestHandler = async (req, res, next) => {
             gamertag,
             console_name,
             status,
-            hours_played
-        }
+            hours_played,
+            sortBy,
+            sortDir
+        },
+        currentPage: page
      });
 };
 
