@@ -50,12 +50,12 @@ These are better than tags right now for your stack and current level:
 •	Favorites: a simple boolean like  favorite BOOLEAN DEFAULT FALSE  on  user_games .
 •	Platform availability: keep  game_consoles  and query “show all games on Switch” or “show all consoles for Elden Ring.”
 
-
-# completed library connection
+### Tuesday 7/14/26 
+ completed library connection
 
 #### new task
 ## allow creation of new users to create new entries
-## get started page from home page
+## get started ~~page~~ from home page
 ## 1.create user block with console_name joined
 ## 2. optional game add or homepage link
 
@@ -65,5 +65,34 @@ These are better than tags right now for your stack and current level:
 ## 2. router
 ## 3. ejs
 
-# Where im at
-## got users route up and running. Now just need to make it so new users can be added.
+# completed
+1. user page, user create page have been created
+2. users page created, add users finished. Now working on editing/delete and validation/error handling
+3. added success and error messages
+4. resorted game library to order by descending and added created_at to database.
+4. added delete button to game library
+
+## DATABASE CHANGES
+-- 7/14/26 5:46pm
+ALTER TABLE game_library ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+why: So i could arrange the game library to show desc but realized i could just move the success message up but whatever 
+##
+
+
+# remaining tasks
+1. Add delete button for ~~game library~~, users
+2. Add edit button for game user data.
+######
+
+###### Wednesday 7/15/26
+# To-Do
+2. Add edit button for game user data.
+
+
+
+
+
+
+
+
+######

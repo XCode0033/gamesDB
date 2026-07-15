@@ -15,6 +15,31 @@
             font-size: larger;
         }
         
+        #searchForm {
+            display: flex;
+            flex-direction: column;
+            
+        }
+
+        #search-section {
+            display: flex;
+        }
+
+        #searchBtn {
+            width: 100px;
+            margin-right: 20px;
+            border: 0px solid;
+            border-radius: 10px;
+            padding: 10px;
+            transition: background-color 0.2s ease-in-out;
+
+        }
+
+        #searchBtn:hover {
+            background-color: lightblue;
+        }
+
+     
         </style>
 </head>
 <body>
@@ -22,6 +47,71 @@
     <a href="/">Return</a>
     <p id="deleteSuccess" class="hidden">Entry Successfully Deleted!!</p>
      <p id="librarySuccess" class="hidden">Successfully added to library!</p>
+     <p id="searchSuccess" class="hidden">Search Successfull!</p>
+     <h2>Search</h2>
+     <form id="searchForm" action="/gameLibrary" method="GET">
+        <div id="search-section">
+            <div id="search-games">
+            <h2><strong>Games</strong></h2>
+            <div>
+                <label for="game_id">ID</label>
+                <input type="text" name="game_id" placeholder="ID" value="<%= filters?.game_id || "" %>">
+            </div>
+
+            <div>
+                <label for="title">Title</label>
+                <input type="text" name="title" placeholder="Title" value="<%= filters?.title || "" %>">
+            </div>
+
+            <div>
+                <label for="genre">Genre</label>
+                <input type="text" name="genre" placeholder="Genre" value="<%= filters?.genre || "" %>">
+            </div>
+
+            <div>
+                <label for="rating">Rating</label>
+                <input type="text" name="rating" placeholder="Rating" values="<%= filters?.rating || "" %>">
+            </div>
+
+        </div>
+
+        <div id="search-users">
+            <h2><strong>Users</strong></h2>
+            <div>
+                <label for="userId">ID</label>
+                <input type="text" name="user_id" placeholder="User Id" value="<%= filters?.user_id || "" %>">
+            </div>
+
+            <div>
+                <label for="gamertag">Gamertag</label>
+                <input type="text" name="gamertag" placeholder="Gamertag" value="<%= filters?.gamertag || "" %>">
+            </div>
+
+            <div>
+                <label for="console">Console</label>
+                <input type="text" name="console_name" placeholder="Console" value="<%= filters?.console_name || "" %>">
+            </div>
+
+            <div>
+                <label for="status">Status</label>
+                <input type="text" name="status" placeholder="Status" value="<%= filters?.status || "" %>">
+            </div>
+            <div>
+                <label for="hours_played">Hours</label>
+                <input type="text" name="hours_played" placeholder="Hours Played" value="<%= filters?.hours || "" %>">
+            </div>
+
+        </div>
+        </div>
+        <div id="searchAndClear">
+            <button id="searchBtn" type="submit">Search</button>
+            <a id="clear" href="/gameLibrary">Clear</a>
+
+        </div>
+     </form>
+
+
+
     <% games.forEach(game => { %>
         <p><strong>ID: <%= game.game_id %></strong></p>
         <p><strong>Title: <%= game.title %></strong></p>
@@ -38,7 +128,7 @@
         </ul>
         <!-- remember that everything is joined under "game" -->
         <form class="deleteForms" data-id="<%= game.library_id %>" action="/gameLibrary/<%= game.library_id %>" method="DELETE">
-            <button type="submit">Delete</button>
+            <button id="deleteBtn" type="submit">Delete</button>
         </form>
     <% }); %>
         

@@ -3,7 +3,22 @@ import { pool } from '../db';
 import { ApiError } from '../utils/ApiError';
 
 export const getGameLibrary: RequestHandler = async (req, res, next) => {
-    const sql =
+    
+    // game pieces
+    const game_id = req.query.game_id as string
+    const title = req.query.title as string
+    const genre = req.query.genre as string
+    const rating = req.query.rating as string
+    // ---
+    // user pieces(user, gamertag, console: console_name, junctions:hours played, status)
+    const user_id = req.query.user_id as string
+    const gamertag = req.query.gamertag as string
+    const console_name = req.query.console_name as string
+    const status = req.query.status as string
+    const hours_played = req.query.hours_played as string
+  
+    
+    let sql =
         `
     SELECT
         gl.library_id,
@@ -26,11 +41,80 @@ export const getGameLibrary: RequestHandler = async (req, res, next) => {
         ON u.user_id = gl.user_id
         JOIN consoles AS c
         ON c.console_id = gl.console_id
-        ORDER BY gl.created_at DESC;
+        WHERE 1=1
     `;
+    const values: any[] = [];
+    let count = 1;
+    if(game_id) {
+        sql += `AND g.game_id = $${count}`;
+        values.push(game_id);
+        count++;
+    }
 
-    const result = await pool.query(sql);
-    res.render('library/gameLibrary', { games: result.rows });
+    if(title) {
+        sql += ` AND g.title ILIKE $${count}`;
+        values.push(`%${title}%`);
+        count++;
+    }
+
+    if(genre) {
+        sql += ` AND g.genre ILIKE $${count}`;
+        values.push(`%${genre}%`);
+        count++;
+    }
+
+    if(rating) {
+        sql += ` AND g.rating = $${count}`;
+        values.push(Number(rating))
+        count++;
+    }
+
+    if(user_id) {
+        sql += ` AND u.user_id = $${count}`;
+        values.push(user_id)
+        count++;
+    }
+
+    if(gamertag) {
+        sql += ` AND u.gamertag ILIKE $${count}`;
+        values.push(`%${gamertag}%`);
+        count++;
+    }
+
+    if(console_name) {
+        sql += ` AND c.console_name ILIKE $${count}`;
+        values.push(`%${console_name}%`);
+        count++
+    }
+
+    if(status){
+        sql += ` AND gl.status ILIKE $${count}`;
+        values.push(`%${status}%`);
+        count++;
+
+    }
+
+    if(hours_played) {
+        sql += ` AND gl.hours_played = $${count}`;
+        values.push(Number(hours_played))
+        count++;
+    }
+
+    const result = await pool.query(sql, values);
+    res.render('library/gameLibrary', { 
+        games: result.rows,
+        filters: {
+            game_id,
+            title,
+            genre,
+            rating,
+            user_id,
+            gamertag,
+            console_name,
+            status,
+            hours_played
+        }
+     });
 };
 
 export const getLibraryEditPage: RequestHandler = async (req, res, next) => {
